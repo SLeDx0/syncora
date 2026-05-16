@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Syncora Panel | Dashboard</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="panel-shell">
+  <aside class="panel-sidebar">
+    <a class="panel-brand" href="#dashboard" data-jump="dashboard">
+      <img id="sideLogo" src="/syncora-pp.png" alt="">
+      <span id="sideBrand">Syncora</span>
+    </a>
+
+    <nav class="panel-nav" aria-label="Panel">
+      <div class="nav-category" data-i18n="nav.core">Merkez</div>
+      <button class="active" type="button" data-view="dashboard"><span class="nav-number">01</span><span class="nav-label" data-i18n="views.dashboard">Ana sayfa</span></button>
+      <button type="button" data-view="operations"><span class="nav-number">02</span><span class="nav-label" data-i18n="views.operations">Operasyon</span></button>
+      <button type="button" data-view="records"><span class="nav-number">03</span><span class="nav-label" data-i18n="views.records">Kayitlar</span></button>
+
+      <div class="nav-category" data-i18n="nav.management">Yonetim</div>
+      <button type="button" data-view="personnel"><span class="nav-number">04</span><span class="nav-label" data-i18n="views.personnel">Personel</span></button>
+      <button type="button" data-view="departments"><span class="nav-number">05</span><span class="nav-label" data-i18n="views.departments">Departman</span></button>
+      <button type="button" data-view="servers"><span class="nav-number">06</span><span class="nav-label" data-i18n="views.servers">Sunucular</span></button>
+
+      <div class="nav-category" data-i18n="nav.system">Sistem</div>
+      <button type="button" data-view="integrations"><span class="nav-number">07</span><span class="nav-label" data-i18n="views.integrations">Entegrasyon</span></button>
+      <button type="button" data-view="logs"><span class="nav-number">08</span><span class="nav-label" data-i18n="views.logs">Loglar</span></button>
+      <button type="button" data-view="settings"><span class="nav-number">09</span><span class="nav-label" data-i18n="views.settings">Ayarlar</span></button>
+    </nav>
+
+    <section class="sidebar-footer" id="discordBox"></section>
+  </aside>
+
+  <main class="panel-main">
+    <header class="panel-topbar">
+      <div>
+        <p class="eyebrow" data-i18n="top.eyebrow">Syncora</p>
+        <h1 id="pageTitle">Ana sayfa</h1>
+      </div>
+      <div class="top-actions">
+        <button class="ghost-btn" type="button" data-action="refresh" data-i18n="button.refresh">Yenile</button>
+        <select id="languageSelect" aria-label="Dil" data-i18n-aria-label="language.label">
+          <option value="tr">TR</option>
+          <option value="en">EN</option>
+          <option value="ru">RS</option>
+        </select>
+        <button class="ghost-btn danger" type="button" id="logoutBtn" data-i18n="button.logout">Cikis</button>
+      </div>
+    </header>
+
+    <p class="notice hidden" id="appNotice"></p>
+
+    <section class="view active" id="dashboardView">
+      <section class="home-hero">
+        <div class="hero-copy">
+          <p class="eyebrow" data-i18n="hero.eyebrow">Canli operasyon</p>
+          <h2 id="heroTitle">Syncora panel</h2>
+          <div class="hero-pulse">
+            <span id="heroServerState" data-i18n="hero.serverWaiting">Sunucu beklemede</span>
+            <span id="heroUpdated" data-i18n="hero.dataLoading">Veri hazirlaniyor</span>
+          </div>
+        </div>
+        <div class="hero-status">
+          <span data-i18n="hero.activePlayers">Aktif oyuncu</span>
+          <strong id="heroPlayers">0</strong>
+          <small id="heroCapacity">0% kapasite</small>
+        </div>
+      </section>
+
+      <div class="stat-grid">
+        <article class="stat-card accent-teal">
+          <span data-i18n="hero.activePlayers">Aktif oyuncu</span>
+          <strong id="totalPlayers">0/0</strong>
+          <small id="playerCapacity">0% kapasite</small>
+        </article>
+        <article class="stat-card accent-gold">
+          <span data-i18n="stat.serverStatus">Sunucu durumu</span>
+          <strong id="serverState">Kapali</strong>
+          <small id="onlineServers">0 baglanti</small>
+        </article>
+        <article class="stat-card accent-rose">
+          <span data-i18n="stat.activeStaff">Aktif personel</span>
+          <strong id="activePersonnel">0</strong>
+          <small id="staffRatio">0 toplam</small>
+        </article>
+        <article class="stat-card accent-violet">
+          <span data-i18n="stat.openTasks">Acik gorev</span>
+          <strong id="openTaskCount">0</strong>
+          <small data-i18n="stat.operationList">oyuncu listesi</small>
+        </article>
+      </div>
+
+      <section class="surface">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="dashboard.departmentActivity">Departman aktifligi</h2>
+            <p data-i18n="dashboard.departmentDescription">Secilen zaman araligindaki aktif personel yogunlugu.</p>
+          </div>
+          <div class="segmented" id="rangeFilter">
+            <button class="active" type="button" data-range="hour" data-i18n="range.hour">Saatlik</button>
+            <button type="button" data-range="day" data-i18n="range.day">Gunluk</button>
+            <button type="button" data-range="month" data-i18n="range.month">Aylik</button>
+          </div>
+        </div>
+        <div class="chart-layout">
+          <canvas id="departmentChart" height="320"></canvas>
+          <div class="data-list" id="departmentSummary"></div>
+        </div>
+      </section>
+
+      <section class="split-grid">
+        <article class="surface">
+          <div class="section-head"><h2 data-i18n="dashboard.metricsChart">Isletim grafigi</h2></div>
+          <canvas id="metricsChart" height="260"></canvas>
+        </article>
+        <article class="surface">
+          <div class="section-head"><h2 data-i18n="dashboard.serverCards">Sunucu kartlari</h2></div>
+          <div class="data-list" id="serverList"></div>
+        </article>
+      </section>
+    </section>
+
+    <section class="view" id="personnelView">
+      <section class="section-grid">
+        <form class="surface form-stack" id="personnelForm">
+          <div class="section-head">
+            <h2 data-i18n="personnel.add">Personel ekle</h2>
+            <span class="tag" data-i18n="tag.roster">Roster</span>
+          </div>
+          <label><span data-i18n="personnel.fullName">Ad soyad</span><input name="name" required autocomplete="off"></label>
+          <label><span data-i18n="personnel.department">Departman</span><select name="department" id="personnelDepartment"></select></label>
+          <label><span data-i18n="personnel.rank">Rutbe</span><input name="rank" value="Yetkili" autocomplete="off"></label>
+          <label><span data-i18n="personnel.discordId">Discord ID</span><input name="discordId" autocomplete="off"></label>
+          <label><span data-i18n="personnel.fivemIdentifier">FiveM identifier</span><input name="fivemIdentifier" autocomplete="off"></label>
+          <button class="primary-btn" type="submit" data-i18n="personnel.add">Personel ekle</button>
+        </form>
+
+        <section class="surface">
+          <div class="section-head">
+            <div>
+              <h2 data-i18n="personnel.list">Personel listesi</h2>
+              <p id="personnelCount">0 kayit</p>
+            </div>
+            <input class="compact-input" id="personnelSearch" placeholder="Personel ara" data-i18n-placeholder="personnel.search">
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="views.personnel">Personel</th>
+                  <th data-i18n="personnel.department">Departman</th>
+                  <th data-i18n="personnel.rank">Rutbe</th>
+                  <th data-i18n="tag.status">Durum</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="personnelTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <section class="view" id="departmentsView">
+      <section class="section-grid">
+        <form class="surface form-stack" id="departmentForm">
+          <div class="section-head">
+            <h2 data-i18n="departments.create">Departman olustur</h2>
+            <span class="tag" data-i18n="tag.unit">Unit</span>
+          </div>
+          <label><span data-i18n="departments.name">Departman adi</span><input name="name" required autocomplete="off"></label>
+          <label><span data-i18n="departments.shortId">Kisa ID</span><input name="id" placeholder="ornegin: sheriff" data-i18n-placeholder="departments.exampleId" autocomplete="off"></label>
+          <label><span data-i18n="departments.color">Renk</span><input name="color" type="color" value="#26dfff"></label>
+          <button class="primary-btn" type="submit" data-i18n="departments.add">Departman ekle</button>
+        </form>
+
+        <section class="surface">
+          <div class="section-head">
+            <div>
+              <h2 data-i18n="departments.title">Departmanlar</h2>
+              <p data-i18n="departments.description">Personel ve aktiflik dagilimi.</p>
+            </div>
+          </div>
+          <div class="department-grid" id="departmentCards"></div>
+        </section>
+      </section>
+    </section>
+
+    <section class="view" id="serversView">
+      <section class="section-grid">
+        <form class="surface form-stack" id="serverForm">
+          <div class="section-head">
+            <h2 data-i18n="servers.add">Sunucu ekle</h2>
+            <span class="tag">FiveM</span>
+          </div>
+          <label><span data-i18n="servers.name">Sunucu adi</span><input name="name" required autocomplete="off"></label>
+          <label><span data-i18n="servers.address">Adres veya cfx kodu</span><input name="address" placeholder="cfx.re/join/xxxx veya ip:port" data-i18n-placeholder="servers.addressPlaceholder" autocomplete="off"></label>
+          <label class="inline-check"><input name="enabled" type="checkbox" checked> <span data-i18n="servers.enabled">Aktif</span></label>
+          <div class="button-row">
+            <button class="primary-btn" type="submit" data-i18n="button.save">Kaydet</button>
+            <button class="ghost-btn" type="button" id="testServerBtn" data-i18n="button.test">Test et</button>
+          </div>
+          <p class="subtle" id="serverTestResult"></p>
+        </form>
+
+        <section class="surface">
+          <div class="section-head">
+            <div>
+              <h2 data-i18n="servers.config">Sunucu konfigurasyonu</h2>
+              <p data-i18n="servers.configDescription">Aktif kartlar genel bakisa yansir.</p>
+            </div>
+          </div>
+          <div class="data-list" id="serverConfigList"></div>
+        </section>
+      </section>
+    </section>
+
+    <section class="view" id="operationsView">
+      <section class="section-grid">
+        <form class="surface form-stack" id="taskForm">
+          <div class="section-head">
+            <h2 data-i18n="operations.createTask">NOT olustur</h2>
+            <span class="tag" data-i18n="tag.ops">Ops</span>
+          </div>
+          <label><span data-i18n="operations.title">Baslik</span><input name="title" required autocomplete="off"></label>
+          <label><span data-i18n="operations.owner">Sorumlu</span><input name="owner" autocomplete="off"></label>
+          <label><span data-i18n="operations.priority">Oncelik</span>
+            <select name="priority">
+              <option value="normal" data-i18n="priority.normal">Normal</option>
+              <option value="high" data-i18n="priority.high">Yuksek</option>
+              <option value="low" data-i18n="priority.low">Dusuk</option>
+            </select>
+          </label>
+          <button class="primary-btn" type="submit" data-i18n="operations.addTask">NOT ekle</button>
+        </form>
+
+        <section class="surface">
+          <div class="section-head">
+            <div>
+              <h2 data-i18n="operations.flow">not akışı</h2>
+              <p id="taskCount">0 açık not</p>
+            </div>
+            <button class="ghost-btn" type="button" id="clearDoneBtn" data-i18n="operations.clearDone">Tamamlananlari temizle</button>
+          </div>
+          <div class="task-board" id="taskList"></div>
+        </section>
+      </section>
+
+      <section class="surface">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="operations.notes">NOTLAR</h2>
+            <p data-i18n="operations.notesDescription">Paylasimli calisma notlari.</p>
+          </div>
+          <button class="primary-btn" type="button" id="saveOperationNotes" data-i18n="operations.saveNotes">Notlari kaydet</button>
+        </div>
+        <textarea id="operationsNotes" placeholder="Operasyon notlari" data-i18n-placeholder="operations.notes"></textarea>
+      </section>
+    </section>
+
+    <section class="view" id="recordsView">
+      <section class="surface">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="records.center">Kayıt merkezi</h2>
+            <p data-i18n="records.description">Personel, departman ve son gorulme verileri.</p>
+          </div>
+          <input class="compact-input" id="recordSearch" placeholder="Kayit ara" data-i18n-placeholder="records.search">
+        </div>
+        <div class="record-grid" id="recordsList"></div>
+      </section>
+    </section>
+
+    <section class="view" id="integrationsView">
+      <section class="split-grid">
+        <article class="surface">
+          <div class="section-head">
+            <h2>Discord</h2>
+            <span class="tag" id="discordStateTag">Durum</span>
+          </div>
+          <div id="discordIntegration"></div>
+        </article>
+        <article class="surface">
+          <div class="section-head">
+            <h2 data-i18n="integrations.fivem">FiveM baglantilari</h2>
+            <span class="tag" id="integrationServerCount">0 server</span>
+          </div>
+          <div class="data-list" id="integrationServers"></div>
+        </article>
+      </section>
+    </section>
+
+    <section class="view" id="logsView">
+      <section class="surface">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="logs.flow">Log akis</h2>
+            <p data-i18n="logs.description">Son 300 panel hareketi.</p>
+          </div>
+          <div class="button-row">
+            <input class="compact-input" id="logSearch" placeholder="Log ara" data-i18n-placeholder="logs.search">
+            <button class="ghost-btn" type="button" id="reloadLogs" data-i18n="button.refresh">Yenile</button>
+          </div>
+        </div>
+        <div class="timeline" id="logsList"></div>
+      </section>
+    </section>
+
+    <section class="view" id="settingsView">
+      <section class="surface">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="settings.rooms">Ayar odalari</h2>
+            <p data-i18n="settings.description">Panelin genel gorunumu, medya dosyalari ve hesap bilgileri buradan yonetilir.</p>
+          </div>
+          <div class="segmented settings-tabs" id="settingsTabs">
+            <button class="active" type="button" data-settings-room="general" data-i18n="settings.general">Genel panel</button>
+            <button type="button" data-settings-room="media" data-i18n="settings.media">Gorsel</button>
+            <button type="button" data-settings-room="account" data-i18n="settings.account">Hesap bilgileri</button>
+          </div>
+        </div>
+
+        <div class="settings-room active" id="settingsGeneralRoom">
+          <form class="form-stack settings-form" id="settingsForm">
+            <div class="section-head">
+              <h2 data-i18n="settings.general">Genel panel</h2>
+              <span class="tag" data-i18n="tag.admin">Admin</span>
+            </div>
+            <label><span data-i18n="settings.brandName">Marka adi</span><input name="brandName" id="settingsBrandName" required></label>
+            <label><span data-i18n="language.label">Dil</span>
+              <select name="language" id="settingsLanguage">
+                <option value="tr">TR</option>
+                <option value="en">EN</option>
+                <option value="ru">RS</option>
+              </select>
+            </label>
+            <label><span data-i18n="settings.logoUrl">Logo URL</span><input name="logoUrl" id="settingsLogoUrl"></label>
+            <label><span data-i18n="settings.backgroundUrl">Arka plan URL</span><input name="backgroundUrl" id="settingsBackgroundUrl"></label>
+            <button class="primary-btn" type="submit" data-i18n="settings.saveGeneral">Genel ayarlari kaydet</button>
+          </form>
+        </div>
+
+        <div class="settings-room" id="settingsMediaRoom">
+          <section class="form-stack settings-form">
+            <div class="section-head">
+              <h2 data-i18n="settings.visual">Gorsel ayarlari</h2>
+              <span class="tag" data-i18n="tag.media">Media</span>
+            </div>
+            <label><span data-i18n="settings.logoFile">Logo dosyasi</span><input id="logoUpload" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>
+            <label><span data-i18n="settings.backgroundFile">Arka plan dosyasi</span><input id="backgroundUpload" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>
+            <p class="subtle" data-i18n="settings.uploadHint">Yuklenen gorseller panelin tamaminda kullanilir.</p>
+          </section>
+        </div>
+
+        <div class="settings-room" id="settingsAccountRoom">
+          <section class="section-grid">
+            <form class="form-stack settings-form" id="accountForm">
+              <div class="section-head">
+                <h2 data-i18n="settings.account">Hesap bilgileri</h2>
+                <span class="tag" data-i18n="tag.profile">Profil</span>
+              </div>
+              <label><span data-i18n="settings.panelName">Panel adi</span><input name="name" id="accountName" required autocomplete="name"></label>
+              <label>Gmail<input name="email" id="accountEmail" type="text" inputmode="email" required autocomplete="email"></label>
+              <label><span data-i18n="settings.currentPassword">Mevcut sifre</span><input name="currentPassword" type="password" autocomplete="current-password"></label>
+              <label><span data-i18n="settings.newPassword">Yeni sifre</span><input name="newPassword" id="accountNewPassword" type="password" autocomplete="new-password" minlength="6"></label>
+              <label><span data-i18n="settings.confirmPassword">Yeni sifre tekrar</span><input name="confirmPassword" id="accountConfirmPassword" type="password" autocomplete="new-password" minlength="6"></label>
+              <button class="primary-btn" type="submit" data-i18n="settings.saveAccount">Hesabi kaydet</button>
+            </form>
+
+            <section class="form-stack settings-form">
+              <div class="section-head">
+                <h2 data-i18n="settings.profileLinks">Profil baglantilari</h2>
+                <span class="tag" id="accountPasswordTag">Hesap</span>
+              </div>
+              <div id="accountSummary"></div>
+              <div id="settingsDiscordProfile"></div>
+            </section>
+          </section>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

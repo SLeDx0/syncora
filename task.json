@@ -1,0 +1,36 @@
+﻿{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Syncora Panel: Start",
+      "type": "shell",
+      "command": "node server.js",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PORT": "3000",
+          "PUBLIC_SITE_URL": "https://syncora.netlify.app",
+          "APP_URL": "https://syncora.netlify.app",
+          "SITE_URL": "https://syncora.netlify.app",
+          "BASE_URL": "https://syncora.netlify.app",
+          "DISCORD_REDIRECT_URI": "https://syncora.netlify.app/discord/callback"
+        }
+      },
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Syncora Panel: Check",
+      "type": "shell",
+      "command": "npm.cmd run check",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
