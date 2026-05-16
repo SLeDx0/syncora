@@ -1771,6 +1771,7 @@ async function handleApi(req, res, pathname, url) {
         backgroundUrl: state.settings.backgroundUrl,
         logoUrl: state.settings.logoUrl,
         inviteRequired: false,
+        discordEnabled: isDiscordConfigured(),
         discordRedirectUri: isDiscordConfigured() ? resolveDiscordRedirectUri(req, url) : "",
         siteUrl: configuredPublicOrigin(req, url),
         apiBaseUrl: process.env.API_BASE_URL || "/api"

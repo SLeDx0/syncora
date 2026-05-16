@@ -14,13 +14,13 @@ const discordI18n = {
     scopeIdentify: "Hesabini tanimlar",
     scopeLink: "Panel hesabina baglar",
     scopeTeam: "Sunucu ekibi icin ortak gorunum saglar",
-    settingsMissing: ".env dosyasina Discord Client ID ve Client Secret eklenmeden Discord baglantisi baslamaz.",
+    settingsMissing: "Discord ayarlari eksik. Netlify Environment Variables icinde DISCORD_CLIENT_ID ve DISCORD_CLIENT_SECRET kontrol edilmeli.",
     settingsMissingButton: "Discord ayari eksik",
     configReadFailed: "Discord baglanti ayarlari okunamadi.",
     discord_network: "Bu bilgisayar/server Discord API'ye erisemiyor. Baglanti discord.com yerine ag engeline takiliyor; Discord API erisimi olan bir agda veya sunucuda calistir.",
-    discord_redirect: "Discord Redirect URI uyusmuyor. .env ve Discord Developer Portal adresi birebir ayni olmali.",
+    discord_redirect: "Discord Redirect URI uyusmuyor. Netlify ve Discord Developer Portal adresi birebir ayni olmali.",
     discord_credentials: "Discord Client ID veya Client Secret hatali gorunuyor.",
-    discord_failed: "Discord baglantisi tamamlanamadi. .env ve Discord Developer Portal ayarlarini kontrol et.",
+    discord_failed: "Discord baglantisi tamamlanamadi. Redirect URI ve Discord Developer Portal ayarlarini kontrol et.",
     discord_config: "Discord ayarlari eksik.",
     discord_state: "Discord oturumu dogrulanamadi."
   },
@@ -35,13 +35,13 @@ const discordI18n = {
     scopeIdentify: "Identifies your account",
     scopeLink: "Links to the panel account",
     scopeTeam: "Provides a shared view for the server team",
-    settingsMissing: "Discord connection cannot start until Discord Client ID and Client Secret are added to .env.",
+    settingsMissing: "Discord settings are missing. Check DISCORD_CLIENT_ID and DISCORD_CLIENT_SECRET in Netlify Environment Variables.",
     settingsMissingButton: "Discord settings missing",
     configReadFailed: "Discord connection settings could not be read.",
     discord_network: "This computer/server cannot reach the Discord API. Run it on a network or server with Discord API access.",
-    discord_redirect: "Discord Redirect URI does not match. The .env and Discord Developer Portal addresses must be identical.",
+    discord_redirect: "Discord Redirect URI does not match. The Netlify and Discord Developer Portal addresses must be identical.",
     discord_credentials: "Discord Client ID or Client Secret looks wrong.",
-    discord_failed: "Discord connection could not be completed. Check .env and Discord Developer Portal settings.",
+    discord_failed: "Discord connection could not be completed. Check Redirect URI and Discord Developer Portal settings.",
     discord_config: "Discord settings are missing.",
     discord_state: "Discord session could not be verified."
   },
@@ -56,13 +56,13 @@ const discordI18n = {
     scopeIdentify: "Opredelyaet akkaunt",
     scopeLink: "Svyazyvaet s akkauntom paneli",
     scopeTeam: "Daet obshchiy vid dlya komandy servera",
-    settingsMissing: "Discord podklyuchenie ne nachnetsya, poka v .env ne dobavleny Discord Client ID i Client Secret.",
+    settingsMissing: "Nastroyki Discord otsutstvuyut. Proverte DISCORD_CLIENT_ID i DISCORD_CLIENT_SECRET v Netlify Environment Variables.",
     settingsMissingButton: "Nastroyki Discord otsutstvuyut",
     configReadFailed: "Nastroyki Discord podklyucheniya ne prochitany.",
     discord_network: "Etot kompyuter/server ne mozhet dostuchatsya do Discord API. Zapustite v seti ili na servere s dostupom k Discord API.",
-    discord_redirect: "Discord Redirect URI ne sovpadaet. Adresa v .env i Discord Developer Portal dolzhny sovpadat.",
+    discord_redirect: "Discord Redirect URI ne sovpadaet. Adresa v Netlify i Discord Developer Portal dolzhny sovpadat.",
     discord_credentials: "Discord Client ID ili Client Secret neverny.",
-    discord_failed: "Discord podklyuchenie ne zaversheno. Proverte .env i nastroyki Discord Developer Portal.",
+    discord_failed: "Discord podklyuchenie ne zaversheno. Proverte Redirect URI i nastroyki Discord Developer Portal.",
     discord_config: "Nastroyki Discord otsutstvuyut.",
     discord_state: "Sessiya Discord ne proverena."
   }
@@ -100,8 +100,22 @@ function showUrlError() {
 }
 
 async function loadDiscordConfig() {
-  const response = await fetch("/api/public-config", { credentials: "include" });
-  const config = await response.json();
+  const [configResponse, healthResponse] = await Promise.allSettled([
+    fetch("/api/public-config", { credentials: "include" }),
+    fetch("/api/health", { credentials: "include", cache: "no-store" })
+  ]);
+
+  if (configResponse.status !== "fulfilled" || !configResponse.value.ok) {
+    throw new Error("public_config_failed");
+  }
+
+  const config = await configResponse.value.json();
+  let health = null;
+  if (healthResponse.status === "fulfilled" && healthResponse.value.ok) {
+    health = await healthResponse.value.json().catch(() => null);
+  }
+
+  const discordReady = Boolean(health?.discord?.enabled ?? config.discordEnabled ?? config.discordRedirectUri);
   discordLang = normalizeLanguage(config.language || discordLang);
   document.querySelector("#discordBrand").textContent = config.brandName || "Syncora Roleplay";
   document.querySelector("#discordLogo").src = config.logoUrl || "/syncora-pp.png";
@@ -109,11 +123,15 @@ async function loadDiscordConfig() {
   document.body.style.setProperty("--bg-image", config.backgroundUrl ? `url("${config.backgroundUrl}")` : "none");
   translateDiscord();
 
-  if (!config.discordEnabled) {
+  if (!discordReady) {
     showDiscordNotice(t("settingsMissing"));
     button.disabled = true;
     button.textContent = t("settingsMissingButton");
+    return;
   }
+
+  button.disabled = false;
+  button.textContent = t("authorize");
 }
 
 button.addEventListener("click", () => {
