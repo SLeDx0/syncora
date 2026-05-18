@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Syncora">
+  <defs>
+    <linearGradient id="syncoraMark" x1="22" y1="18" x2="106" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f4e8ff"/>
+      <stop offset=".48" stop-color="#9b8cff"/>
+      <stop offset="1" stop-color="#38d9a9"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0 1 0 0 0 .75 0"/>
+      <feBlend in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#08090d"/>
+  <path d="M85 34c-6-5-15-8-25-8-18 0-31 9-31 23 0 16 15 20 31 24 13 3 20 5 20 12 0 6-7 10-18 10-11 0-22-4-30-11l-9 14c9 9 23 14 39 14 20 0 34-9 34-25 0-17-15-22-32-26-13-3-20-5-20-11 0-5 6-9 16-9 8 0 16 3 22 8l3-15Z" fill="url(#syncoraMark)" filter="url(#glow)"/>
+  <path d="M90 31c10 9 16 21 17 36-13-2-24-8-32-19 4-7 8-12 15-17Z" fill="#38d9a9" opacity=".3"/>
+</svg>

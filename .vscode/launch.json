@@ -1,0 +1,34 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "editor-browser",
+      "request": "launch",
+      "name": "Syncora Panel: Netlify Browser",
+      "url": "https://syncora.netlify.app/",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Syncora Panel: Local Server + Netlify Browser",
+      "program": "${workspaceFolder}/server.js",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "PORT": "3000",
+        "MAX_PORT": "3000",
+        "PUBLIC_SITE_URL": "https://syncora.netlify.app",
+        "APP_URL": "https://syncora.netlify.app",
+        "SITE_URL": "https://syncora.netlify.app",
+        "BASE_URL": "https://syncora.netlify.app",
+        "DISCORD_REDIRECT_URI": "https://syncora.netlify.app/discord/callback"
+      },
+      "serverReadyAction": {
+        "pattern": "Syncora public panel: (https://syncora\\.netlify\\.app)",
+        "uriFormat": "%s/",
+        "action": "openExternally"
+      }
+    }
+  ]
+}

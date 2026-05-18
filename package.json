@@ -1,0 +1,21 @@
+{
+  "name": "syncora-panel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Syncora ortak yonetim paneli",
+  "scripts": {
+    "start": "node server.js",
+    "build:single": "node scripts/build-single-html.js",
+    "build:netlify": "node scripts/build-netlify.js",
+    "check": "node --check server.js && node --check app.js && node --check auth.js && node --check discord.js && node --check netlify/functions/api.js && node --check scripts/build-single-html.js && node --check scripts/build-netlify.js"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^10.7.4",
+    "bcryptjs": "^3.0.3",
+    "mysql2": "^3.22.3",
+    "nodemailer": "^8.0.7"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

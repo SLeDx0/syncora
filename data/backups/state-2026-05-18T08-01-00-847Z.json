@@ -1,0 +1,273 @@
+{
+  "version": 1,
+  "users": [],
+  "sessions": [],
+  "oauthStates": [],
+  "passwordResetTokens": [],
+  "personnel": [],
+  "tasks": [],
+  "tickets": [],
+  "announcements": [],
+  "events": [],
+  "files": [],
+  "forms": [],
+  "formResponses": [],
+  "invitations": [],
+  "notifications": [],
+  "fivemRecords": [],
+  "businessRecords": [],
+  "failedLoginAttempts": [],
+  "notes": {
+    "general": "",
+    "operations": ""
+  },
+  "logs": [],
+  "metrics": [],
+  "settings": {
+    "brandName": "Syncora Roleplay",
+    "language": "tr",
+    "purpose": "fivem",
+    "theme": "dark",
+    "accentColor": "#26dfff",
+    "backgroundUrl": "",
+    "logoUrl": "/syncora-pp.png",
+    "inviteRequired": false,
+    "modules": {
+      "fivem": true,
+      "tickets": true,
+      "announcements": true,
+      "forms": true,
+      "files": true,
+      "calendar": true,
+      "tasks": true,
+      "personnel": true,
+      "logs": true,
+      "security": true,
+      "discord": true,
+      "dashboardWidgets": true,
+      "business": true
+    },
+    "widgets": {
+      "totalUsers": true,
+      "activeUsers": true,
+      "openTickets": true,
+      "pendingTickets": true,
+      "recentAnnouncements": true,
+      "recentLogs": true,
+      "upcomingEvents": true,
+      "recentUsers": true,
+      "fivemStatus": true,
+      "departmentStats": true,
+      "taskStats": true
+    },
+    "permissions": {
+      "founder": {
+        "viewUsers": true,
+        "createUsers": true,
+        "editUsers": true,
+        "deleteUsers": true,
+        "manageDepartments": true,
+        "manageTickets": true,
+        "createAnnouncements": true,
+        "manageForms": true,
+        "uploadFiles": true,
+        "viewLogs": true,
+        "manageSettings": true,
+        "manageModules": true,
+        "accessSecurity": true,
+        "manageFivem": true,
+        "manageEvents": true,
+        "manageTasks": true,
+        "manageDiscord": true,
+        "manageBusiness": true
+      },
+      "admin": {
+        "viewUsers": true,
+        "createUsers": true,
+        "editUsers": true,
+        "deleteUsers": true,
+        "manageDepartments": true,
+        "manageTickets": true,
+        "createAnnouncements": true,
+        "manageForms": true,
+        "uploadFiles": true,
+        "viewLogs": true,
+        "manageSettings": true,
+        "manageModules": true,
+        "accessSecurity": true,
+        "manageFivem": true,
+        "manageEvents": true,
+        "manageTasks": true,
+        "manageDiscord": true,
+        "manageBusiness": true
+      },
+      "moderator": {
+        "viewUsers": true,
+        "manageTickets": true,
+        "createAnnouncements": true,
+        "manageForms": false,
+        "uploadFiles": false,
+        "viewLogs": true,
+        "manageSettings": false,
+        "manageModules": false,
+        "accessSecurity": false,
+        "manageFivem": true,
+        "manageEvents": true,
+        "manageTasks": true,
+        "manageDiscord": false,
+        "manageBusiness": false,
+        "createUsers": false,
+        "editUsers": false,
+        "deleteUsers": false,
+        "manageDepartments": false
+      },
+      "staff": {
+        "viewUsers": true,
+        "manageTickets": true,
+        "createAnnouncements": false,
+        "manageForms": false,
+        "uploadFiles": false,
+        "viewLogs": false,
+        "manageSettings": false,
+        "manageModules": false,
+        "accessSecurity": false,
+        "manageFivem": true,
+        "manageEvents": false,
+        "manageTasks": true,
+        "manageDiscord": false,
+        "manageBusiness": false,
+        "createUsers": false,
+        "editUsers": false,
+        "deleteUsers": false,
+        "manageDepartments": false
+      },
+      "leader": {
+        "viewUsers": true,
+        "manageTickets": true,
+        "createAnnouncements": true,
+        "manageForms": false,
+        "uploadFiles": true,
+        "viewLogs": false,
+        "manageSettings": false,
+        "manageModules": false,
+        "accessSecurity": false,
+        "manageFivem": false,
+        "manageEvents": true,
+        "manageTasks": true,
+        "manageDiscord": false,
+        "manageBusiness": false,
+        "createUsers": false,
+        "editUsers": false,
+        "deleteUsers": false,
+        "manageDepartments": true
+      },
+      "member": {
+        "viewUsers": true,
+        "manageTickets": false,
+        "createAnnouncements": false,
+        "manageForms": false,
+        "uploadFiles": false,
+        "viewLogs": false,
+        "manageSettings": false,
+        "manageModules": false,
+        "accessSecurity": false,
+        "manageFivem": false,
+        "manageEvents": false,
+        "manageTasks": false,
+        "manageDiscord": false,
+        "manageBusiness": false,
+        "createUsers": false,
+        "editUsers": false,
+        "deleteUsers": false,
+        "manageDepartments": false
+      },
+      "guest": {
+        "viewUsers": false,
+        "manageTickets": false,
+        "createAnnouncements": false,
+        "manageForms": false,
+        "uploadFiles": false,
+        "viewLogs": false,
+        "manageSettings": false,
+        "manageModules": false,
+        "accessSecurity": false,
+        "manageFivem": false,
+        "manageEvents": false,
+        "manageTasks": false,
+        "manageDiscord": false,
+        "manageBusiness": false,
+        "createUsers": false,
+        "editUsers": false,
+        "deleteUsers": false,
+        "manageDepartments": false
+      }
+    },
+    "security": {
+      "failedLoginLimit": 5,
+      "failedLoginWindowMinutes": 15,
+      "failedLoginLockMinutes": 15,
+      "resetCodeMinutes": 15,
+      "resetCodeAttemptLimit": 5,
+      "strongPassword": true,
+      "twoFactorReady": false
+    },
+    "discordWebhookUrl": "",
+    "discordGuildId": "",
+    "discordRoleMap": {},
+    "fileCategories": [
+      "Kurallar",
+      "Basvuru belgeleri",
+      "Log kayitlari",
+      "Ekip belgeleri",
+      "Sunucu belgeleri",
+      "Sirket belgeleri",
+      "Diger"
+    ],
+    "servers": [
+      {
+        "id": "syncora-rp",
+        "name": "Syncora RP",
+        "address": "",
+        "enabled": true
+      }
+    ],
+    "departments": [
+      {
+        "id": "police",
+        "name": {
+          "tr": "Polis",
+          "en": "Police",
+          "ru": "Politsiya"
+        },
+        "color": "#7dd3fc"
+      },
+      {
+        "id": "ems",
+        "name": {
+          "tr": "EMS",
+          "en": "EMS",
+          "ru": "EMS"
+        },
+        "color": "#fb7185"
+      },
+      {
+        "id": "mechanic",
+        "name": {
+          "tr": "Mekanik",
+          "en": "Mechanic",
+          "ru": "Mekhanik"
+        },
+        "color": "#fbbf24"
+      },
+      {
+        "id": "staff",
+        "name": {
+          "tr": "Yetkili",
+          "en": "Staff",
+          "ru": "Administratsiya"
+        },
+        "color": "#c084fc"
+      }
+    ]
+  }
+}
