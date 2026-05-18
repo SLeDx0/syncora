@@ -1,0 +1,51 @@
+[build]
+  command = "npm run build:netlify"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+  SYNCORA_STORAGE = "netlify-blobs"
+  SYNCORA_AUTH_STORAGE = "netlify-blobs"
+  PUBLIC_SITE_URL = "https://syncora.netlify.app"
+  APP_URL = "https://syncora.netlify.app"
+  SITE_URL = "https://syncora.netlify.app"
+  BASE_URL = "https://syncora.netlify.app"
+  DISCORD_CLIENT_ID = "1504910694607360032"
+  DISCORD_REDIRECT_URI = "https://syncora.netlify.app/discord/callback"
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["server.js", "data/state.json"]
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/discord/callback"
+  to = "/.netlify/functions/api/discord/callback"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/app"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/discord"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
